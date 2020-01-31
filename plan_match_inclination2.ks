@@ -48,12 +48,12 @@ log_debug("time to burn: " + format_time(node_timestamp - time:seconds)).
 
 local n is node(node_timestamp, 0, 0, 0).
 add n.
-lock rs to positionat(ship,node_timestamp)-body:position.
-lock vs to velocityat(ship,node_timestamp):obt.
-lock rt to positionat(target,node_timestamp)-body:position.
-lock vt to velocityat(target,node_timestamp):obt.
-lock ns to vcrs(vs,rs):normalized.
-lock nt to vcrs(vt,rt):normalized.
+local lock rs to positionat(ship,node_timestamp)-body:position.
+local lock vs to velocityat(ship,node_timestamp):obt.
+local lock rt to positionat(target,node_timestamp)-body:position.
+local lock vt to velocityat(target,node_timestamp):obt.
+local lock ns to vcrs(vs,rs):normalized.
+local lock nt to vcrs(vt,rt):normalized.
 
 local dv is v(0,0,0).
 
