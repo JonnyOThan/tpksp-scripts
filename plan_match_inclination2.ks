@@ -1,4 +1,4 @@
-parameter mode is 'phase'.
+parameter mode is 'match_phase'.
 
 run once "util".
 run once "orbit_util".
