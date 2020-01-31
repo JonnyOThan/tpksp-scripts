@@ -1,4 +1,4 @@
-parameter mode is 'match_phase'.
+parameter mode is "match_phase".
 
 run once "util".
 run once "orbit_util".
@@ -57,15 +57,15 @@ local lock nt to vcrs(vt,rt):normalized.
 
 local dv is v(0,0,0).
 
-if mode='match_phase' {
+if mode="match_phase" {
     local v_tangential is vcrs(rs,ns):normalized * vs.
     local v_radial is rs:normalized * vs.
     set dv to v_radial * rs:normalized + v_tangential * vcrs(rs,nt):normalized - vs.
 }
-else if mode='mindv' {
+else if mode="mindv" {
     set dv to vxcl(nt, vs)-vs.
 }
-else if mode='direction_and_speed' {
+else if mode="direction_and_speed" {
     set dv to vxcl(nt, vs):normalized * vs:mag - vs.
 }
 else
