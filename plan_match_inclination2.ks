@@ -40,7 +40,7 @@ local function newton {
         set err to f(x).
     }
     log_debug("Calculated eccentric anomaly gives a mean anomaly error of " + err + " in " + steps + " step" +
-    (choose "." if steps=0 else "s.")).
+    (choose "." if steps=1 else "s.")).
     return x.
 }
 
@@ -67,10 +67,10 @@ if(ship_orbit:epoch < time:seconds)
     set base_meananomaly to mod(mod(base_time-ship_orbit:epoch, ship_orbit:period)/ship_orbit:period*360+ship_orbit:meananomalyatepoch,360).
 }
 
-local AN_eccentric_anomaly is arctan2(sqrt(1-eccentricity^2)*sin(AN_true_anomaly), eccentricity+cos(AN_true_anomaly)).
+local AN_eccentric_anomaly is mod(360+arctan2(sqrt(1-eccentricity^2)*sin(AN_true_anomaly), eccentricity+cos(AN_true_anomaly)),360).
 local AN_mean_anomaly is AN_eccentric_anomaly-eccentricity*constant:RadToDeg*sin(AN_eccentric_anomaly).
 local AN_timestamp is mod(360+AN_mean_anomaly-base_meananomaly,360)/sqrt(b:mu/ship_orbit:semimajoraxis^3)/constant:RadToDeg + base_time.
-local DN_eccentric_anomaly is arctan2(sqrt(1-eccentricity^2)*sin(DN_true_anomaly), eccentricity+cos(DN_true_anomaly)).
+local DN_eccentric_anomaly is mod(360+arctan2(sqrt(1-eccentricity^2)*sin(DN_true_anomaly), eccentricity+cos(DN_true_anomaly)),360).
 local DN_mean_anomaly is DN_eccentric_anomaly-eccentricity*constant:RadToDeg*sin(DN_eccentric_anomaly).
 local DN_timestamp is mod(360+DN_mean_anomaly-base_meananomaly,360)/sqrt(b:mu/ship_orbit:semimajoraxis^3)/constant:RadToDeg + base_time.
 
