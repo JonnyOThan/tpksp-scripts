@@ -1,7 +1,7 @@
 parameter desired_roll is 0.
 parameter desired_heading is 90.
 parameter target_apoapsis is body:atm:height + 10000.
-parameter g_turn_target_altitude is target_apoapsis + 20000. // slightly higher than target AP
+parameter turn_target_altitude is target_apoapsis + 20000. // slightly higher than target AP
 parameter throttle_down_altitude is target_apoapsis - 20000.
 
 run once "logging.ks".
@@ -12,13 +12,13 @@ log_message("=== ascent ===").
 lock throttle to 1.
 sas off.
 
-function g_turn {
-    parameter target_altitude is g_turn_target_altitude.
+function turn {
+    parameter target_altitude is turn_target_altitude.
     parameter exponent is 0.5.
     lock steering to heading(desired_heading, max(0, 90*(1-(apoapsis/target_altitude)^exponent))) * R(0, 0, desired_roll).
 }
 
-g_turn().
+turn().
 
 local old_thrust to ship:maxthrustat(0).
 
@@ -80,8 +80,8 @@ until apoapsis > target_apoapsis {
         stage_to_next_engine().
         set old_thrust to ship:maxthrustat(0).
         wait 1.
-        log_message("resuming g-turn").
-        g_turn().
+        log_message("resuming turn").
+        turn().
     }
     wait 0.5.
 }
