@@ -80,14 +80,24 @@ function get_mass_flow_rate {
 
 function warp_and_wait {
   parameter duration.
+  local endtime is time:seconds + duration.
   if duration < 0 return.
   log_message("waiting for " + format_time(duration)).
-  if duration > 10 {
-    kuniverse:timewarp:cancelwarp().
-    kuniverse:timewarp:warpto(time:seconds + duration - 5).
+  kuniverse:timewarp:cancelwarp().
+  until duration <= 10 {
+    set warp to 0.
+    wait until kuniverse:timewarp:issettled.
+    set warpmode to "rails".
+    set warp to 1.
+    wait until kuniverse:timewarp:issettled.
+    kuniverse:timewarp:warpto(endtime - 5).
+    wait until warp = 0 and kuniverse:timewarp:issettled.
+    set duration to endtime - time:seconds.
+    log_debug("still " + format_time(duration) + " left").
   }
-  wait duration.
+  wait endtime - time:seconds - 5.
   set warp to 0.
+  wait endtime - time:seconds.
 }
 
 function stage_to_next_engine {
