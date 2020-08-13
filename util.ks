@@ -51,7 +51,7 @@ function get_combined_isp {
   parameter engines.
   local numerator is 0.
   for e in engines {
-    set numerator to numerator + e:availablethrust.
+    set numerator to numerator + e:possiblethrust.
   }
   local mass_flow_rate is get_mass_flow_rate(engines).
   if mass_flow_rate > 0 
