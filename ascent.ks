@@ -32,7 +32,7 @@ list parts in all_parts.
 for p in all_parts {
     if (p:stage >= 0) {
         for r in p:resources {
-            if (r:name = "liquidfuel" and r:enabled) {
+            if (r:name = "liquidfuel" and r:enabled and r:amount > 0) {
                 tanks_by_stage[p:stage]:add(p).
                 break.
             }
