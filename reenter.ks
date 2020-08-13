@@ -32,8 +32,8 @@ when altitude < body:atm:height then
 
 set navmode to "surface".
 
-local heat_shield_stage to -1.
-local ablator_modules to ship:modulesnamed("ModuleAblator").
+local heat_shield_stage is -1.
+local ablator_modules is ship:modulesnamed("ModuleAblator").
 
 for m in ablator_modules {
     set heat_shield_stage to max(heat_shield_stage, m:part:stage).

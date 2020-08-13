@@ -29,8 +29,8 @@ log_debug("angle to wait: " + angle_to_wait).
 log_debug("phase deg/s: " + phase_change_per_second).
 log_debug("time to node: " + format_time(time_to_node)).
 
-set node to node(time:seconds + time_to_node, 0, 0, transfer_dv).
-add node.
+local n is node(time:seconds + time_to_node, 0, 0, transfer_dv).
+add n.
 
 function score_distance_to_target {
     parameter node.
@@ -68,10 +68,10 @@ local null_time_offsets is list(0, 0).
 logging_push_threshold(sev_message).
 
 // optimize the prograde burn on the node to match the apoapsis to the target's altitude exactly.
-runpath("optimize_node", score_apoapsis_height@, node, prograde_offsets, null_time_offsets).
+runpath("optimize_node", score_apoapsis_height@, n, prograde_offsets, null_time_offsets).
 
 // if we still don't have an intercept, try to optimize further
-if (not node:orbit:hasnextpatch or node:orbit:nextpatch:body = target) {
+if (not n:orbit:hasnextpatch or n:orbit:nextpatch:body = target) {
     runpath("optimize_node", score_distance_to_target@).
 }
 

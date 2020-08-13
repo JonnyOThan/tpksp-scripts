@@ -34,10 +34,10 @@ function get_orbit_period_of {
 function get_phase_angle_to_position {
   parameter position.
 
-  set ship_vec to ship:position - body:position.
-  set target_vec to position - body:position.
-  set angle to vang(ship_vec, target_vec).
-  set cross to vcrs(ship_vec, target_vec).
+  local ship_vec is ship:position - body:position.
+  local target_vec is position - body:position.
+  local angle is vang(ship_vec, target_vec).
+  local cross is vcrs(ship_vec, target_vec).
   if (cross:y > 0) set angle to -angle.
   return angle.
 }

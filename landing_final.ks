@@ -13,11 +13,11 @@ lock target_speed to max(distance/10, 0) + final_target_speed.
 lock gravity to body:mu / body:position:sqrmagnitude.
 lock max_twr to ship:availablethrust / ship:mass / gravity.
 
-local pid to pidloop().
+local pid is pidloop().
 set pid:setpoint to -target_speed.
 set pid:maxoutput to max_twr.
 set pid:minoutput to 0.
-local thrott to 0.
+local thrott is 0.
 lock throttle to thrott.
 
 sas off.

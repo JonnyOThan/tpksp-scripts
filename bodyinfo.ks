@@ -21,10 +21,10 @@ print "apoapsis:":padright(20) + round(b:orbit:apoapsis/1e6,1) + " Mm".
 print "current speed:":padright(20) + round(velocityat(b, time:seconds):orbit:mag, 1) + " m/s".
 
 print "anomaly scan:":padright(20) + round(addons:scansat:getcoverage(b, "anomaly"),1) + "%".
-set as to addons:scansat:getanomalies(b).
-set found to 0.
-for a in as if a:detail set found to found + 1.
-print "anomalies visited:":padright(20) + found + "/" + as:length.
+local anomalies is addons:scansat:getanomalies(b).
+local found is 0.
+for anomaly in anomalies if anomaly:detail set found to found + 1.
+print "anomalies visited:":padright(20) + found + "/" + anomalies:length.
 
 if not b:orbitingchildren:empty {
 	print "children:".

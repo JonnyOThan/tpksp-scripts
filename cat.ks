@@ -1,6 +1,6 @@
 parameter target_path.
 if exists(target_path) {
-	set contents to open(target_path):readall().
+	local contents is open(target_path):readall().
 	for line in contents {
 		print line.
 	}

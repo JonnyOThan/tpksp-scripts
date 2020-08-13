@@ -20,7 +20,7 @@ function turn {
 
 turn().
 
-local old_thrust to ship:maxthrustat(0).
+local old_thrust is ship:maxthrustat(0).
 
 local tanks_by_stage to list().
 from { local i to 0. } until i = stage:number+1 step {set i to i+1.} do {
@@ -48,14 +48,14 @@ lock twr to (ship:availablethrust / ship:mass / gravity).
 when apoapsis > throttle_down_altitude and twr > 1 then lock throttle to 0.5.
 
 until apoapsis > target_apoapsis {
-    local should_stage to false.
+    local should_stage is false.
 
     if ship:maxthrustat(0) < old_thrust {
         set should_stage to true.
     }
 
     if stage:number > 1 and not tanks_by_stage[stage:number-1]:empty {
-        local fuel_in_stage to 0.
+        local fuel_in_stage is 0.
         for t in tanks_by_stage[stage:number-1] {
             for r in t:resources {
                 if r:name = "liquidfuel" {

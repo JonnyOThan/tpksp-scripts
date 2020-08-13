@@ -7,8 +7,8 @@ log_message("=== plan_reentry ===").
 
 run "remove_all_nodes".
 
-local orbitpatch to ship:orbit.
-local time_to_patch to 0.
+local orbitpatch is ship:orbit.
+local time_to_patch is 0.
 until orbitpatch:body:name="kerbin" {
     if (orbitpatch:hasnextpatch) {
         set time_to_patch to orbitpatch:nextpatcheta.
@@ -19,15 +19,15 @@ until orbitpatch:body:name="kerbin" {
     }
 }
 
-local time_past_epoch to time:seconds + time_to_patch - orbitpatch:epoch.
-local additional_periods to time_past_epoch / orbitpatch:period.
-local additional_mean_anomaly to 360 * (additional_periods - floor(additional_periods)).
-local mean_anomaly_at_transition to mod(orbitpatch:meananomalyatepoch + additional_mean_anomaly, 360).
+local time_past_epoch is time:seconds + time_to_patch - orbitpatch:epoch.
+local additional_periods is time_past_epoch / orbitpatch:period.
+local additional_mean_anomaly is 360 * (additional_periods - floor(additional_periods)).
+local mean_anomaly_at_transition is mod(orbitpatch:meananomalyatepoch + additional_mean_anomaly, 360).
 
-local mean_anomaly_to_next_apoapsis to mod(540 - mean_anomaly_at_transition, 360).
-local additional_time_to_next_apoapsis to mean_anomaly_to_next_apoapsis / 360 * orbitpatch:period.
+local mean_anomaly_to_next_apoapsis is mod(540 - mean_anomaly_at_transition, 360).
+local additional_time_to_next_apoapsis is mean_anomaly_to_next_apoapsis / 360 * orbitpatch:period.
 
-local total_time_to_node to time_to_patch + additional_time_to_next_apoapsis.
+local total_time_to_node is time_to_patch + additional_time_to_next_apoapsis.
 
 log_debug("time to patch: " + format_time(time_to_patch)).
 log_debug("time past epoch: " + format_time(time_past_epoch)).
@@ -43,10 +43,9 @@ log_debug("total time to node: " + format_time(total_time_to_node)).
 
 // TODO: if the kerbin patch doesn't have an apoapsis, plan a radial-in burn to reduce PE
 
-set speed_at_ap to get_orbital_speed_at_altitude(orbitpatch:apoapsis, orbitpatch:semimajoraxis, orbitpatch:body).
-set desired_sma to (orbitpatch:apoapsis + 2 * orbitpatch:body:radius + desired_pe)/2.
-set desired_speed_at_ap to get_orbital_speed_at_altitude(orbitpatch:apoapsis, desired_sma, orbitpatch:body).
+local speed_at_ap is get_orbital_speed_at_altitude(orbitpatch:apoapsis, orbitpatch:semimajoraxis, orbitpatch:body).
+local desired_sma is (orbitpatch:apoapsis + 2 * orbitpatch:body:radius + desired_pe)/2.
+local desired_speed_at_ap is get_orbital_speed_at_altitude(orbitpatch:apoapsis, desired_sma, orbitpatch:body).
 log_debug("speed at ap: " + speed_at_ap).
 log_debug("desired speed: " + desired_speed_at_ap).
-set n to node(time:seconds + total_time_to_node, 0, 0, desired_speed_at_ap - speed_at_ap).
-add n.
+add node(time:seconds + total_time_to_node, 0, 0, desired_speed_at_ap - speed_at_ap).

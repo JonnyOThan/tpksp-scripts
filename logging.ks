@@ -1,11 +1,11 @@
 parameter print_severity is 0.
 
-set sev_debug to 0. // detailed info used for debugging
-set sev_message to 1. // human-readable info about the state of the rocket
-set sev_warning to 2. // something weird happened, but it's probably not fatal
-set sev_error to 3. // something terrible happened and the script cannot continue
+global sev_debug is 0. // detailed info used for debugging
+global sev_message is 1. // human-readable info about the state of the rocket
+global sev_warning is 2. // something weird happened, but it's probably not fatal
+global sev_error is 3. // something terrible happened and the script cannot continue
 
-set severity_stack to list(print_severity).
+local severity_stack is list(print_severity).
 
 function logging_get_threshold {
     return severity_stack[severity_stack:length - 1].
@@ -48,5 +48,5 @@ function log_error {
     parameter text.
     log_event(text, sev_error).
 
-    set x to 0/0. // janky way to crash the program
+    print 0/0. // janky way to crash the program
 }

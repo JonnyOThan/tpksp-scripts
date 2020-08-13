@@ -6,7 +6,7 @@ log_message("=== landing ===").
 SET SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
 sas off.
 lock steering to srfretrograde.
-set navmode to "surface".
+set NAVMODE to "surface".
 gear on.
 brakes on.
 
@@ -14,21 +14,21 @@ if (periapsis > 0) {
     log_error("cannot run landing program if you're still in orbit").
 }
 
-local leg_modules to ship:modulesnamed("ModuleWheelBase").
-local control_part_offset to vdot(ship:controlpart:position, ship:facing:vector).
+local leg_modules is ship:modulesnamed("ModuleWheelBase").
+local control_part_offset is vdot(ship:controlpart:position, ship:facing:vector).
 
-local lowest_leg_offset to control_part_offset.
+local lowest_leg_offset is control_part_offset.
 
 for leg in leg_modules {
     local leg_length is 1. // silly assumption
-    local leg_offset to vdot(leg:part:position, ship:facing:vector) - leg_length.
+    local leg_offset is vdot(leg:part:position, ship:facing:vector) - leg_length.
     set lowest_leg_offset to min(lowest_leg_offset, leg_offset).
 }
 
 log_debug("control part is " + round(control_part_offset,2) + "m above center of mass").
 log_debug("leg offset is " + round(-lowest_leg_offset,2) + "m below center of mass").
 
-local radar_offset to control_part_offset - lowest_leg_offset.
+local radar_offset is control_part_offset - lowest_leg_offset.
 
 function get_predicted_impact_time {
     local impact_time_lower_bound is time:seconds.
@@ -59,7 +59,7 @@ function get_geoposition_of_ship_at_time {
     parameter timestamp.
     local ship_position is positionat(ship, timestamp).
     local terrain_spot is body:geopositionof(ship_position).
-    local delta_time to timestamp - time:seconds.
+    local delta_time is timestamp - time:seconds.
     return latlng(terrain_spot:lat, terrain_spot:lng - delta_time * 360 / body:rotationperiod).
 }
 
@@ -70,8 +70,8 @@ function get_energy_delta {
     parameter ship_throttle is 1.
 
     local impact_position is positionat(ship, impact_timestamp).
-    local impact_geoposition to get_geoposition_of_ship_at_time(impact_timestamp).
-    local terrain_spot_now to body:geopositionof(impact_position).
+    local impact_geoposition is get_geoposition_of_ship_at_time(impact_timestamp).
+    local terrain_spot_now is body:geopositionof(impact_position).
 
     local velocity_at_start is velocityat(ship, sample_timestamp):orbit.
     local velocity_of_landing_point is terrain_spot_now:altitudevelocity(impact_geoposition:terrainheight):orbit.
@@ -101,8 +101,8 @@ function estimate_burn_start_time {
     parameter impact_time.
     parameter ship_throttle is 1.
 
-    local lower_bound to time:seconds.
-    local upper_bound to impact_time.
+    local lower_bound is time:seconds.
+    local upper_bound is impact_time.
 
     until (upper_bound - lower_bound < 1) {
         local midpoint is (lower_bound + upper_bound) / 2.
@@ -118,25 +118,25 @@ function estimate_burn_start_time {
 }
 
 local impact_time is get_predicted_impact_time().
-local burn_start_time to estimate_burn_start_time(impact_time, 0.9).
+local burn_start_time is estimate_burn_start_time(impact_time, 0.9).
 
 log_message("impact in " + format_time(impact_time - time:seconds)).
 log_message("burn start in " + format_time(burn_start_time - time:seconds)).
 
-local debug_arrows_enabled to logging_get_threshold() <= sev_debug.
+local debug_arrows_enabled is logging_get_threshold() <= sev_debug.
 
-local initial_impact_geoposition to get_geoposition_of_ship_at_time(impact_time).
-local vinitial to vecdraw(V(0,0,0), V(0,0,0), RGB(0,0,1), "", 100, debug_arrows_enabled, 1).
+local initial_impact_geoposition is get_geoposition_of_ship_at_time(impact_time).
+local vinitial is vecdraw(V(0,0,0), V(0,0,0), RGB(0,0,1), "", 100, debug_arrows_enabled, 1).
 set vinitial:startupdater to { return initial_impact_geoposition:position + up:vector * 20 * vinitial:scale. }.
 set vinitial:vecupdater to { return -up:vector * 20. }.
 
 warp_and_wait(burn_start_time - time:seconds).
 
-local vgood to vecdraw(V(0,0,0), V(0,0,0), RGB(0,1,0), "", 100, debug_arrows_enabled, 1).
+local vgood is vecdraw(V(0,0,0), V(0,0,0), RGB(0,1,0), "", 100, debug_arrows_enabled, 1).
 set vgood:startupdater to { return get_geoposition_of_ship_at_time(impact_time):position + up:vector * 20 * vgood:scale. }.
 set vgood:vecupdater to { return -up:vector * 20. }.
 
-set pid to pidloop().
+local pid is pidloop().
 
 set pid:setpoint to 2.
 set pid:kp to 0.2.
@@ -145,24 +145,24 @@ set pid:kp to 0.2.
 
 set pid:maxoutput to 1.
 set pid:minoutput to 0.
-local thrott to 1.
+local thrott is 1.
 lock throttle to thrott.
 
 lock steering to srfretrograde.
 
-local altitude_speed_factor to 10.
-local final_target_speed to 2.
+local altitude_speed_factor is 10.
+local final_target_speed is 2.
 
 until velocity:surface:mag < (alt:radar - radar_offset) / altitude_speed_factor + final_target_speed {
     set impact_time to get_predicted_impact_time().
-    local energy_delta to get_energy_delta(time:seconds, impact_time, thrott)/1000.
+    local energy_delta is get_energy_delta(time:seconds, impact_time, thrott)/1000.
     
-    local distance_to_impact to positionat(ship, impact_time):mag.
+    local distance_to_impact is positionat(ship, impact_time):mag.
 
     set vinitial:scale to max(distance_to_impact/100, 0.1).
     set vgood:scale to max(distance_to_impact/100, 0.1).
 
-    local de_ratio to -energy_delta*100/distance_to_impact.
+    local de_ratio is -energy_delta*100/distance_to_impact.
 
     //set thrott to pid:update(time:seconds, de_ratio).
 
