@@ -88,6 +88,8 @@ until apoapsis > target_apoapsis {
 
 // TODO: fairings
 
+lock steering to velocityat(ship, time:seconds + eta:apoapsis):orbit.
+
 lock throttle to 0.
 wait 0.
 
