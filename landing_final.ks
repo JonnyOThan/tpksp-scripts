@@ -23,7 +23,7 @@ lock throttle to thrott.
 sas off.
 lock steering to srfretrograde.
 
-until status="landed" {
+until status="landed" or status = "splashed" {
     set pid:setpoint to -target_speed.
     set pid:maxoutput to max_twr.
 
