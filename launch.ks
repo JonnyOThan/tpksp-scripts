@@ -19,7 +19,10 @@ v0:play(note("c5", 0.3, 0.5)).
 sas on.
 
 lock throttle to 1.
-stage.
+
+if ship:status = "prelaunch" {
+	stage.
+}
 
 local clamps to ship:modulesnamed("LaunchClamp").
 for clamp in clamps {
