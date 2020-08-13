@@ -40,7 +40,7 @@ for p in all_parts {
     }
 }
 
-log_debug(tanks_by_stage).
+// log_debug(tanks_by_stage).
 
 lock gravity to body:mu/(altitude+body:radius)^2.
 lock twr to (ship:availablethrust / ship:mass / gravity).
