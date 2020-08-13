@@ -23,7 +23,16 @@ function get_orbit_period {
   parameter sma is ship:orbit:semimajoraxis.
   parameter b is body.
 
-  return 2 * constant:pi * sqrt(sma^3 / b:mu).
+  return 2 * constant:pi * sqrt(abs(sma^3) / b:mu).
+}
+
+function get_current_mean_anomaly {
+  parameter m_orbit.
+
+  local time_since_epoch is time:seconds - m_orbit:epoch.
+  local mean_anomaly is m_orbit:meananomalyatepoch + sqrt(m_orbit:body:mu / abs(m_orbit:semimajoraxis^3)) * time_since_epoch * constant:radtodeg.
+  
+  return mod(360 + mean_anomaly, 360).
 }
 
 function get_orbit_period_of {
@@ -62,11 +71,6 @@ function true_anomaly_from_mean_anomaly {
 function get_mean_anomaly_at_time {
     parameter o, t.
     return mod(o:meananomalyatepoch + 360/o:period * (t - o:epoch), 360).
-}
-
-function get_current_mean_anomaly {
-    parameter o. // orbit
-    return get_mean_anomaly_at_time(o, time:seconds).
 }
 
 // returns a lex with keys:
