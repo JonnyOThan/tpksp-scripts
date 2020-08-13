@@ -93,4 +93,6 @@ lock steering to velocityat(ship, time:seconds + eta:apoapsis):orbit.
 lock throttle to 0.
 wait 0.
 
+log_message("coasting to exit atmosphere").
+
 wait until altitude > body:atm:height.
