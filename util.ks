@@ -1,7 +1,5 @@
 run once "logging".
 
-set g0 to Kerbin:mu / Kerbin:radius^2.
-
 lock normal to vcrs(ship:velocity:orbit, -body:position).
 lock radialin to vcrs(ship:velocity:orbit, normal).
 
@@ -18,7 +16,7 @@ function get_burn_duration {
 
   local engines to get_active_engines().
   local isp to get_combined_isp(engines).
-  local final_mass to ship:mass / (constant:e ^ (deltav / g0 / isp)).
+  local final_mass to ship:mass / (constant:e ^ (deltav / constant:g0 / isp)).
   local fuel_mass_remaining to get_fuel_mass_of_current_stage().
   local burn_duration to (ship:mass - final_mass) / get_mass_flow_rate(engines).
   log_debug("isp: " + isp).
@@ -57,7 +55,7 @@ function get_combined_isp {
   }
   set mass_flow_rate to get_mass_flow_rate(engines).
   if mass_flow_rate > 0 
-    return numerator / mass_flow_rate / g0.
+    return numerator / mass_flow_rate / constant:g0.
   return 0.
 }
 
@@ -76,7 +74,7 @@ function get_mass_flow_rate {
   parameter engines.
   set result to 0.
   for e in engines
-    set result to result + e:availablethrustat(0) / (e:ispat(0) * g0).
+    set result to result + e:possiblethrustat(0) / (e:ispat(0) * constant:g0).
   return result.
 }
 

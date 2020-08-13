@@ -23,7 +23,7 @@ if (engines_are_vacuum(engines) or engines:length = all_engines:length) {
 
     local fuel_mass_in_stage to get_fuel_mass_of_current_stage().
     local isp to get_combined_isp(engines).
-    local dv_of_stage to isp * g0 * ln(ship:mass / (ship:mass - fuel_mass_in_stage)).
+    local dv_of_stage to isp * constant:g0 * ln(ship:mass / (ship:mass - fuel_mass_in_stage)).
 
     local dv_to_booster_sep to speed_for_booster_sep - speed_at_ap.
 
