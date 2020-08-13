@@ -6,7 +6,7 @@ if ship:status = "PRELAUNCH" {
     runoncepath("archive:/logging").
 
     core:doevent("open terminal").
-    set terminal:charheight to 16.
+    set terminal:charheight to 12.
 
     if bootfile = "" {
         log_error("no boot file specified!").
