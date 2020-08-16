@@ -2,7 +2,7 @@ parameter destination is target.
 parameter user_options is lexicon().
 
 local options is lexicon(
-	"create_maneuver_nodes", (choose "both" if destination:istype("body") else "first"),
+	"create_maneuver_nodes", "both",
 	"verbose", true).
 
 if destination:istype("body") {
