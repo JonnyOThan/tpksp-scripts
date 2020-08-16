@@ -96,3 +96,4 @@ wait 0.
 log_message("coasting to exit atmosphere").
 
 wait until altitude > body:atm:height.
+wait 1.
