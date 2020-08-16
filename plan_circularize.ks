@@ -3,6 +3,7 @@ parameter m_orbit is ship:orbit.
 
 run once "util".
 run once "orbit_util".
+run once "logging".
 
 if (m_orbit:hasnextpatch and m_which <> "pe") {
   if (m_which <> "") log_warning("specified orbit is not closed; circularizing at PE instead").
@@ -34,7 +35,7 @@ local orbit_period is get_orbit_period(m_orbit:semimajoraxis, m_orbit:body).
 log_debug("orbit period: " + format_time(orbit_period)).
 
 // select the next closest AP
-local time_until_next_ap is mod(time_until_next_pe + orbit_period / 2, orbit_period).
+local time_until_next_ap is time_until_next_pe - orbit_period / 2.
 
 // unless it's before the epoch..
 if (time:seconds + time_until_next_ap < m_orbit:epoch) {
