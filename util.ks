@@ -74,7 +74,8 @@ function get_mass_flow_rate {
   parameter engines.
   local result is 0.
   for e in engines
-    set result to result + e:possiblethrustat(0) / (e:ispat(0) * constant:g0).
+    if (e:ispat(0) > 0) // jet engines in space have 0 isp
+      set result to result + e:possiblethrustat(0) / (e:ispat(0) * constant:g0).
   return result.
 }
 

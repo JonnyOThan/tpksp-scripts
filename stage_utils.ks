@@ -50,7 +50,9 @@ function get_vessel_stage_info {
 
     for engine in engines {
         // add the engine properties to all the stages from where it activates to where it decouples
-        for stage_index in range(get_part_stage(engine), engine:stage+1) {
+        // if it's already active then put it in the current stage instead of the stage where it would normally activate
+        local last_stage_index is (choose stage:number if engine:ignition else engine:stage).
+        for stage_index in range(get_part_stage(engine), last_stage_index+1) {
             local stage_info is result[stage_index].
             stage_info:engines:add(engine).
             set stage_info:thrust to stage_info:thrust + engine:possiblethrust.
