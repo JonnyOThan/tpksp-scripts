@@ -44,7 +44,7 @@ set initial_node_direction to nextnode:deltav.
 
 if tail_factor > 0 {
     function get_throttle {
-        set result to 0.
+        local result is 0.
         if (ship:maxthrust>0) {
             set result to min(1, nextnode:deltav:mag / (tail_factor * ship:maxthrust / ship:mass)).
         }
