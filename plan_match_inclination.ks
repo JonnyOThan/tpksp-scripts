@@ -7,26 +7,41 @@ run once "util".
 log_message("=== planning match inclination ===").
 
 local equatorial is node_selector:matchespattern("equatorial").
+local polar is not equatorial and node_selector:matchespattern("polar").
+local targeted is not (equatorial or polar).
 
-if not equatorial and not hastarget {
+if targeted and not hastarget {
     log_error("No target selected").
 }
 
-if (not equatorial and ship_orbit:body <> target:obt:body) {
+if (targeted and ship_orbit:body <> target:obt:body) {
     log_error("Selected orbital patch and target orbit do not share a common body.").
 }
-if(ship_orbit:eccentricity >= 1) {
+
+local eccentricity is ship_orbit:eccentricity.
+if(eccentricity >= 1) {
     log_error("Cannot match inclination for open orbits.").
 }
 local b is ship_orbit:body.
 local t is ship_orbit:epoch.
 local epoch_pos is (positionat(ship,t)-b:position):normalized.
 local nrm_ship is vcrs(velocityat(ship, t):obt,positionat(ship,t)-b:position):normalized.
-local nrm_trgt is choose vcrs(velocityat(target, t):obt,positionat(target,t)-b:position):normalized if node_selector <> "equatorial" else -ship_orbit:body:angularvel:normalized.
+local nrm_trgt is v(0,0,0).
+if targeted
+{
+    set nrm_trgt to vcrs(velocityat(target, t):obt,positionat(target,t)-b:position):normalized.
+}
+else if equatorial
+{
+    set nrm_trgt to -ship_orbit:body:angularvel:normalized.
+}
+else if polar
+{
+    // leave it for later.
+}
 local angle_to_an is 0.
 local epoch_true_anomaly is 0.
-local eccentricity is ship_orbit:eccentricity.
-if not equatorial
+if targeted
 {
     local vec_to_AN is vcrs(nrm_ship,nrm_trgt):normalized.
     local function sign{parameter x. return choose -1 if x < 0 else 1.}
@@ -57,12 +72,6 @@ if not equatorial
     set epoch_true_anomaly to mod(360+arctan2(sqrt(1-eccentricity^2)*sin(epoch_eccentric_anomaly), cos(epoch_eccentric_anomaly)-eccentricity),360).
     set angle_to_an to vang(vec_to_AN,epoch_pos)*sign(vcrs(vec_to_AN,epoch_pos)*nrm_ship).
 }
-local AN_true_anomaly is choose mod(360+epoch_true_anomaly+angle_to_an,360) if not equatorial else 360-ship_orbit:argumentofperiapsis.
-local DN_true_anomaly is mod(AN_true_anomaly+180,360).
-local inclination is vang(nrm_ship,nrm_trgt).
-
-log_debug("inclination: " + inclination).
-log_debug("delta true anomaly: " + angle_to_an).
 
 local base_time is ship_orbit:epoch.
 local base_meananomaly is ship_orbit:meananomalyatepoch.
@@ -71,6 +80,28 @@ if(ship_orbit:epoch < time:seconds)
     set base_time to time:seconds.
     set base_meananomaly to mod(mod(base_time-ship_orbit:epoch, ship_orbit:period)/ship_orbit:period*360+ship_orbit:meananomalyatepoch,360).
 }
+
+local AN_true_anomaly is v(0,0,0).
+if targeted
+{
+    set AN_true_anomaly to  mod(360+epoch_true_anomaly+angle_to_an,360).
+}
+else if equatorial
+{
+    set AN_true_anomaly to 360-ship_orbit:argumentofperiapsis.
+}
+else if polar
+{
+    set AN_true_anomaly to 180.
+    local t_apo to mod(540-base_meananomaly, 360)*sqrt(ship_orbit:semimajoraxis^3/ship_orbit:body:mu)*constant:RadToDeg + base_time.
+    local rs is positionat(ship,t_apo)-ship_orbit:body:position.
+    set nrm_trgt to vcrs(rs, v(0,1,0)):normalized.
+}
+local DN_true_anomaly is mod(AN_true_anomaly+180,360).
+local inclination is vang(nrm_ship,nrm_trgt).
+
+log_debug("inclination: " + inclination).
+log_debug("delta true anomaly: " + angle_to_an).
 
 local AN_eccentric_anomaly is mod(360+arctan2(sqrt(1-eccentricity^2)*sin(AN_true_anomaly), eccentricity+cos(AN_true_anomaly)),360).
 local AN_mean_anomaly is AN_eccentric_anomaly-eccentricity*constant:RadToDeg*sin(AN_eccentric_anomaly).
@@ -91,7 +122,7 @@ log_debug("AN true anomaly to ap: " + AN_true_anomaly_to_AP).
 log_debug("DN true anomaly to ap: " + DN_true_anomaly_to_AP).
 
 local node_timestamp is 0.
-if(node_selector:matchespattern("highest") or node_selector="equatorial") {
+if(node_selector:matchespattern("highest") or not targeted) {
     set node_timestamp to choose AN_timestamp if AN_true_anomaly_to_AP < DN_true_anomaly_to_AP else DN_timestamp.
 }
 else if(node_selector:matchespattern("lowest")) {
@@ -131,13 +162,13 @@ local rs is positionat(ship,node_timestamp)-b:position.
 local vs is velocityat(ship,node_timestamp):obt.
 local rt is 0. 
 local vt is 0.
-if not equatorial
+if targeted
 {
     set rt to positionat(target,node_timestamp)-b:position.
     set vt to velocityat(target,node_timestamp):obt.
 }
 local ns is vcrs(vs,rs):normalized.
-local nt is choose vcrs(vt,rt):normalized if not equatorial else nrm_trgt.
+local nt is choose vcrs(vt,rt):normalized if targeted else nrm_trgt.
 
 local dv is v(0,0,0).
 
@@ -160,4 +191,5 @@ else
 local node_radialout is dv * vxcl(vs,rs):normalized.
 local node_normal is dv * vcrs(vs,rs):normalized.
 local node_prograde is dv * vs:normalized.
+log_debug("Creating node (" + list(node_radialout, node_normal, node_prograde):join(",") + ").").
 add node(node_timestamp, node_radialout, node_normal, node_prograde).
