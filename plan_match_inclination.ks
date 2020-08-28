@@ -95,7 +95,9 @@ else if polar
     set AN_true_anomaly to 180.
     local t_apo to mod(540-base_meananomaly, 360)*sqrt(ship_orbit:semimajoraxis^3/ship_orbit:body:mu)*constant:RadToDeg + base_time.
     local rs is positionat(ship,t_apo)-ship_orbit:body:position.
-    set nrm_trgt to vcrs(rs, v(0,1,0)):normalized.
+    set nrm_trgt to vcrs(rs, -body:angularvel):normalized.
+    set ns to vcrs(velocityat(ship,t_apo):obt, rs):normalized.
+    if vang(ns,nrm_trgt) > 90 set nrm_trgt to -nrm_trgt.
 }
 local DN_true_anomaly is mod(AN_true_anomaly+180,360).
 local inclination is vang(nrm_ship,nrm_trgt).
