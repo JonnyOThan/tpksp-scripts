@@ -1,8 +1,8 @@
 parameter tail_factor is 0.2.
 
-run once "logging".
-run once "util".
-run once "stage_utils".
+run once "util/logging".
+run once "util/util".
+run once "util/stage_utils".
 
 log_message("=== execute_node ===").
 

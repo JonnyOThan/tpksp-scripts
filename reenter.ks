@@ -1,7 +1,7 @@
 parameter body_name is "kerbin".
 
-run once "util.ks".
-run once "orbit_util".
+run once "util/util".
+run once "util/orbit_util".
 
 if (body:name <> body_name) {
     local kerbin_patch_lex to find_patch(body_name).

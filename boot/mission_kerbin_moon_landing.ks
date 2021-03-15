@@ -6,7 +6,7 @@ if (ship:status = "PRELAUNCH") {
     runpath("archive:/deploy", path(scriptpath()):name).
 }
 
-run once "logging"(1).
+run once "util/logging"(1).
 
 local mission_phases is list(
     {

@@ -1,7 +1,7 @@
 parameter countdown is 3.
 
-run once "logging".
-run once "util.ks".
+run once "util/logging".
+run once "util/util".
 
 log_message("=== launch ===").
 

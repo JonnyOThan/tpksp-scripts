@@ -1,4 +1,4 @@
-run once "util.ks".
+run once "util/util".
 
 function target_distance_at_time
 {

@@ -1,6 +1,6 @@
-run once "logging".
-run once "util".
-run once "orbit_util".
+run once "util/logging".
+run once "util/util".
+run once "util/orbit_util".
 
 log_message("=== plan_moon_intercept === ").
 
@@ -68,11 +68,11 @@ local null_time_offsets is list(0, 0).
 logging_push_threshold(sev_message).
 
 // optimize the prograde burn on the node to match the apoapsis to the target's altitude exactly.
-runpath("optimize_node", score_apoapsis_height@, n, prograde_offsets, null_time_offsets).
+runpath("util/optimize_node", score_apoapsis_height@, n, prograde_offsets, null_time_offsets).
 
 // if we still don't have an intercept, try to optimize further
 if (not n:orbit:hasnextpatch or n:orbit:nextpatch:body = target) {
-    runpath("optimize_node", score_distance_to_target@).
+    runpath("util/optimize_node", score_distance_to_target@).
 }
 
 logging_pop_threshold().

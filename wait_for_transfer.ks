@@ -1,6 +1,6 @@
 parameter tgt is target.
 
-run "util".
+run "util/util".
 
 // a more complex script might look for ancestors of the target
 // (e.g. if the target is Ike and we are in LKO)

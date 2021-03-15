@@ -1,9 +1,9 @@
 parameter m_which is "".
 parameter m_orbit is ship:orbit.
 
-run once "util".
-run once "orbit_util".
-run once "logging".
+run once "util/util".
+run once "util/orbit_util".
+run once "util/logging".
 
 if (m_orbit:hasnextpatch and m_which <> "pe") {
   if (m_which <> "") log_warning("specified orbit is not closed; circularizing at PE instead").

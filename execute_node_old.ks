@@ -1,7 +1,7 @@
 parameter tail_factor is 0.2.
 
-run once "logging.ks".
-run once "util.ks".
+run once "util/logging".
+run once "util/util".
 
 log_message("=== execute_node ===").
 

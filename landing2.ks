@@ -1,5 +1,5 @@
-run once "logging".
-run once "util".
+run once "util/logging".
+run once "util/util".
 
 log_message("=== landing ===").
 

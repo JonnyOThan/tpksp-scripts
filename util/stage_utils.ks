@@ -1,7 +1,7 @@
 @lazyglobal off.
 
-run once "logging".
-run once "util".
+run once "util/logging".
+run once "util/util".
 
 // possiblethrust / possiblethrustat will work for engines that are not yet active, also takes thrust limiter into account
 // ispat works for inactive engines, but isp does not

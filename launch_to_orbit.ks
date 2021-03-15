@@ -1,7 +1,7 @@
 parameter ascent_roll is 0.
 parameter hdg is 90.
 
-run once "logging".
+run once "util/logging".
 
 run launch.
 run ascent(ascent_roll, hdg).

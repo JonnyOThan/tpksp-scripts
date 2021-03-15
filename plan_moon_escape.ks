@@ -1,6 +1,6 @@
-run once "logging".
-run once "util".
-run once "orbit_util".
+run once "util/logging".
+run once "util/util".
+run once "util/orbit_util".
 
 log_message("=== plan_moon_escape ===").
 
@@ -51,5 +51,5 @@ function adjust_periapsis {
 local velocity_offsets is list(V(0, 0, 0), V(0, 0, 0)).
 local time_offsets is list(1, -1).
 
-runpath("optimize_node", minimize_periapsis@, n, velocity_offsets, time_offsets).
-runpath("optimize_node", adjust_periapsis@).
+runpath("util/optimize_node", minimize_periapsis@, n, velocity_offsets, time_offsets).
+runpath("util/optimize_node", adjust_periapsis@).

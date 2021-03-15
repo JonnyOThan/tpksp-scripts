@@ -4,8 +4,8 @@ parameter target_apoapsis is body:atm:height + 10000.
 parameter turn_target_altitude is target_apoapsis + 20000. // slightly higher than target AP
 parameter throttle_down_altitude is target_apoapsis - 20000.
 
-run once "logging.ks".
-run once "util.ks".
+run once "util/logging".
+run once "util/util".
 
 log_message("=== ascent ===").
 

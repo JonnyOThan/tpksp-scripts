@@ -1,6 +1,6 @@
-run once "logging".
-run once "util".
-run once "orbit_util".
+run once "util/logging".
+run once "util/util".
+run once "util/orbit_util".
 
 log_message("=== deorbiting ===").
 

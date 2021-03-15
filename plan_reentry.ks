@@ -1,7 +1,7 @@
 parameter desired_pe is 40000.
 
-run once "logging".
-run once "util".
+run once "util/logging".
+run once "util/util".
 
 log_message("=== plan_reentry ===").
 

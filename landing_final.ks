@@ -2,7 +2,7 @@ parameter radar_offset is 0.
 parameter altitude_factor is 10.
 parameter final_target_speed is 2.
 
-run once "logging".
+run once "util/logging".
 
 log_message("=== final approach ===").
 

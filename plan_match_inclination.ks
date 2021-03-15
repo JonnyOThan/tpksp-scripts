@@ -2,7 +2,7 @@ parameter ship_orbit is ship:orbit.
 parameter node_selector is "highest".
 parameter mode is "match_phase".
 
-run once "util".
+run once "util/util".
 
 log_message("=== planning match inclination ===").
 

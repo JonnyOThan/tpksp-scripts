@@ -1,7 +1,7 @@
 parameter phases.
 
-run once "util".
-run once "logging".
+run once "util/util".
+run once "util/logging".
 
 local persistence_file is "1:/persistence.json".
 

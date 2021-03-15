@@ -1,9 +1,9 @@
 parameter body_name.
 parameter target_periapsis.
 
-run once "logging".
-run once "util".
-run once "orbit_util".
+run once "util/logging".
+run once "util/util".
+run once "util/orbit_util".
 
 log_message("=== adjusting periapsis to " + target_periapsis + " ===").
 
@@ -23,4 +23,4 @@ function score_node {
     return -abs(target_patch_lex["patch"]:periapsis - target_periapsis).
 }
 
-runpath("optimize_node", score_node@).
+runpath("util/optimize_node", score_node@).

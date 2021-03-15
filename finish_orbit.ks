@@ -1,6 +1,6 @@
-run once "logging.ks".
-run once "util.ks".
-run once "orbit_util.ks".
+run once "util/logging".
+run once "util/util".
+run once "util/orbit_util".
 
 log_message("=== finish orbit ===").
 
