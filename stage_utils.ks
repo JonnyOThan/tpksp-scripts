@@ -48,14 +48,20 @@ function get_vessel_stage_info {
     local engines is list().
     list engines in engines.
 
+    local any_active_engines is false.
+    for engine in engines if engine:ignition { set any_active_engines to true. break. }
+
     for engine in engines {
-        // add the engine properties to all the stages from where it activates to where it decouples
-        // if it's already active then put it in the current stage instead of the stage where it would normally activate
-        local last_stage_index is (choose stage:number if engine:ignition else engine:stage).
-        for stage_index in range(get_part_stage(engine), last_stage_index+1) {
-            local stage_info is result[stage_index].
-            stage_info:engines:add(engine).
-            set stage_info:thrust to stage_info:thrust + engine:possiblethrust.
+        // if any engines are active, only consider this engine if it is active.  This prevents considering inactive engines in the current stage
+        if not any_active_engines or engine:ignition or engine:stage <> stage:number {
+            // add the engine properties to all the stages from where it activates to where it decouples
+            // if it's already active then put it in the current stage instead of the stage where it would normally activate
+            local last_stage_index is (choose stage:number if engine:ignition else engine:stage).
+            for stage_index in range(get_part_stage(engine), last_stage_index+1) {
+                local stage_info is result[stage_index].
+                stage_info:engines:add(engine).
+                set stage_info:thrust to stage_info:thrust + engine:possiblethrust.
+            }
         }
     }
 
@@ -115,7 +121,15 @@ local function finalize_vessel_stage_info {
 
 local function get_part_stage {
     parameter part.
+    local result is 0.
     // NOTE: this ignores directionality of the decoupler and assumes it does not stay with the ship
-    if part:istype("launchclamp") or part:istype("decoupler") return part:stage+1.
-    return part:decoupledin+1.
+    if (part:istype("launchclamp") or part:istype("decoupler")) and not part:istype("dockingport"){
+        set result to part:stage+1.
+    } else {
+        set result to part:decoupledin+1.
+    }
+
+    // if result < 0 or result > stage:number print part:title + " " + part:stage + " " + part:decoupledin.
+
+    return min(result, stage:number).
 }

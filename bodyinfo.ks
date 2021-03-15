@@ -12,7 +12,7 @@ if (b:atm:exists) {
 		print "OXYGEN DETECTED".
 }
 print "rotation period:":padright(20) + round(b:rotationperiod/60/60,1) + " hours".
-if b <> sun
+if b:hasbody
 	print "parent body:":padright(20) + b:body:name.
 print "orbital period:":padright(20) + round(b:orbit:period/kerbin:orbit:period,2) + " years".
 print "orbital incl:":padright(20) + b:orbit:inclination + " deg".
