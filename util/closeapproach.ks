@@ -1,4 +1,4 @@
-run once "util/util".
+run once "util".
 
 function target_distance_at_time
 {

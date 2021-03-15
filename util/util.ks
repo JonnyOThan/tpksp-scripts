@@ -1,4 +1,4 @@
-run once "util/logging".
+run once "logging".
 
 lock normal to vcrs(ship:velocity:orbit, -body:position).
 lock radialin to vcrs(ship:velocity:orbit, normal).

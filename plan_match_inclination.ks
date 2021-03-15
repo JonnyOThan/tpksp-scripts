@@ -3,6 +3,7 @@ parameter node_selector is "highest".
 parameter mode is "match_phase".
 
 run once "util/util".
+run once "util/logging".
 
 log_message("=== planning match inclination ===").
 

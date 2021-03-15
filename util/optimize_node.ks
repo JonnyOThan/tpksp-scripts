@@ -6,6 +6,8 @@ parameter velocity_offsets is list(
     V(-1, 0, 0), V(0, -1, 0), V(0, 0, -1), V(0, 0, 0)).
 parameter time_offsets is list(0, 0, 0, 1, 0, 0, 0, -1).
 
+run once "logging".
+
 local current_score is score_function(node).
 local current_velocity is V(node:prograde, node:radialout, node:normal).
 local current_node_timestamp is time:seconds + node:eta.

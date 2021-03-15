@@ -1,4 +1,4 @@
-parameter b.
+parameter b is body.
 clearscreen.
 print b:name.
 print "radius:":padright(20) + round(b:radius/1e3,2) + " km".
