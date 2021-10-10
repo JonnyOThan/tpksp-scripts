@@ -16,6 +16,7 @@ from {local i is countdown.} until i = 0 step { set i to i-1.} do {
 log_message("0").
 v0:play(note("c5", 0.3, 0.5)).
 
+unlock steering.
 sas on.
 
 lock throttle to 1.
@@ -25,12 +26,11 @@ if ship:status = "prelaunch" {
 }
 
 local clamps to ship:modulesnamed("LaunchClamp").
-for clamp in clamps {
-    if clamp:part:stage = stage:number-1 {
+until clamps:empty {
         wait until stage:ready.
         stage.
-        break.
-    }
+	wait 0.
+	set clamps to ship:modulesnamed("LaunchClamp").
 }
 
 wait until velocity:surface:mag > 50.

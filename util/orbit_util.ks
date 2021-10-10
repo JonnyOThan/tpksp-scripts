@@ -1,4 +1,4 @@
-run once "logging".
+run once "util/logging".
 
 function get_orbital_speed_at_altitude {
   parameter a. // altitude

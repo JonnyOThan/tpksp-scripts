@@ -1,4 +1,4 @@
-run once "logging".
+run once "util/logging".
 
 lock normal to vcrs(ship:velocity:orbit, -body:position).
 lock radialin to vcrs(ship:velocity:orbit, normal).
@@ -88,7 +88,7 @@ function warp_and_wait {
   until duration <= 10 {
     set warp to 0.
     wait until kuniverse:timewarp:issettled.
-    set warpmode to "rails".
+    set warpmode to choose "rails" if ship:altitude > body:atm:height else "physics".
     set warp to 1.
     wait until kuniverse:timewarp:issettled.
     kuniverse:timewarp:warpto(endtime - 5).

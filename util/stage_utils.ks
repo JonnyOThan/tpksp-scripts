@@ -1,7 +1,7 @@
 @lazyglobal off.
 
-run once "logging".
-run once "util".
+run once "util/logging".
+run once "util/util".
 
 // possiblethrust / possiblethrustat will work for engines that are not yet active, also takes thrust limiter into account
 // ispat works for inactive engines, but isp does not
@@ -114,7 +114,8 @@ local function finalize_vessel_stage_info {
         if (stage_info:fuelmass > 0 and stage_info:engines:length) {
             local drymass is stage_info:totalmass - stage_info:fuelmass.
             set stage_info:dv to stage_info:isp * constant:g0 * ln(stage_info:totalmass / drymass).
-            set stage_info:burntime to stage_info:fuelmass / get_mass_flow_rate(stage_info:engines).
+            local mass_flow_rate is get_mass_flow_rate(stage_info:engines).
+            set stage_info:burntime to choose 0 if mass_flow_rate = 0 else stage_info:fuelmass / mass_flow_rate.
         }
     }
 }

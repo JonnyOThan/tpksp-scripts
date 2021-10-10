@@ -3,7 +3,8 @@ parameter user_options is lexicon().
 
 local options is lexicon(
 	"create_maneuver_nodes", "both",
-	"verbose", true).
+	"verbose", true,
+	"cleanup_maneuver_nodes", false).
 
 if destination:istype("body") {
 	set options["final_orbit_periapsis"] to destination:atm:height + 10000.

@@ -1,3 +1,4 @@
+parameter desired_reentry_pe is 35000.
 run once "util/logging".
 run once "util/util".
 run once "util/orbit_util".
@@ -6,7 +7,6 @@ log_message("=== plan_moon_escape ===").
 
 run "remove_all_nodes".
 
-local desired_reentry_pe to 35000.
 local desired_kerbin_sma to (body:altitude + desired_reentry_pe + 2 * kerbin:radius)/2.
 local desired_kerbin_velocity_at_escape to get_orbital_speed_at_altitude(body:altitude, desired_kerbin_sma, kerbin).
 local desired_hyperbolic_excess_velocity to desired_kerbin_velocity_at_escape - body:orbit:velocity:orbit:mag.

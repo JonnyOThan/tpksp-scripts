@@ -55,10 +55,12 @@ if tail_factor > 0 {
     lock throttle to 1.
 }
 
+local old_thrust is ship:maxthrust.
 until vang(initial_node_direction, nextnode:deltav) > 90 or nextnode:deltav:mag < 0.001 {
-    if ship:maxthrust = 0 {
+    if ship:maxthrust < old_thrust {
         log_message("stage expired during node execution; remaining dv: " + round(nextnode:deltav:mag, 1)).
         stage_to_next_engine().
+	set old_thrust to ship:maxthrust.
     }
     wait 0.
 }
