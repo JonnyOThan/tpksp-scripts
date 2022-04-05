@@ -94,7 +94,7 @@ else if equatorial
 else if polar
 {
     set AN_true_anomaly to 180.
-    local t_apo to mod(540-base_meananomaly, 360)*sqrt(ship_orbit:semimajoraxis^3/ship_orbit:body:mu)*constant:RadToDeg + base_time.
+    local t_apo to mod(540-base_meananomaly, 360)*sqrt(ship_orbit:semimajoraxis^3/ship_orbit:body:mu)/constant:RadToDeg + base_time.
     local rs is positionat(ship,t_apo)-ship_orbit:body:position.
     set nrm_trgt to vcrs(rs, -body:angularvel):normalized.
     set ns to vcrs(velocityat(ship,t_apo):obt, rs):normalized.
