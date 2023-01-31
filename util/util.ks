@@ -31,11 +31,11 @@ function get_burn_duration {
 }
 
 function get_with_default {
-  parameter lex.
+  parameter testlex.
   parameter key.
   parameter default is 0.
   local result is default.
-  if lex:haskey(key) set result to lex[key].
+  if testlex:haskey(key) set result to testlex[key].
   return result.
 }
 
