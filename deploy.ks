@@ -3,7 +3,7 @@ parameter bootfile.
 if ship:status = "PRELAUNCH" {
 
     // note: explicitly running from the archive
-    runoncepath("archive:/logging").
+    runoncepath("archive:/util/logging").
 
     core:doevent("open terminal").
     set terminal:charheight to 12.

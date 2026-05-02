@@ -25,12 +25,10 @@ if ship:status = "prelaunch" {
 	stage.
 }
 
-local clamps to ship:modulesnamed("LaunchClamp").
-until clamps:empty {
+until ship:modulesnamed("LaunchClamp"):empty and ship:modulesnamed("ModuleRestockLaunchClamp"):empty {
         wait until stage:ready.
         stage.
 	wait 0.
-	set clamps to ship:modulesnamed("LaunchClamp").
 }
 
 wait until velocity:surface:mag > 50.
